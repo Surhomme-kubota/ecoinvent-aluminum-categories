@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecoinvent アルミニウムカテゴリ階層図</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .main-area {
+            position: relative;
+            width: 100%;
+            height: 980px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border: 3px solid #333;
+            border-radius: 20px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .main-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .info-panel-top {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            max-width: 600px;
+            min-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 100;
+        }
+        
+        .area {
+            position: absolute;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .area:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+            z-index: 50;
+        }
+        
+        .area-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .area-content {
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 15px;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+        
+        .sub-item {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .sub-item:hover {
+            transform: translateX(5px);
+            border-left-color: #ffc107;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        }
+        
+        /* エリア配置 */
+        .primary-area {
+            top: 170px;
+            left: 20px;
+            width: 250px;
+            height: 220px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+        
+        .secondary-area {
+            top: 170px;
+            right: 20px;
+            width: 250px;
+            height: 220px;
+            background: linear-gradient(135deg, #4ecdc4, #00b894);
+        }
+        
+        .processing-area {
+            top: 690px;
+            left: 20px;
+            width: 300px;
+            height: 240px;
+            background: linear-gradient(135deg, #45b7d1, #0984e3);
+        }
+        
+        .products-area {
+            top: 690px;
+            right: 20px;
+            width: 300px;
+            height: 240px;
+            background: linear-gradient(135deg, #96ceb4, #55a3ff);
+        }
+        
+        .alloys-area {
+            top: 420px;
+            left: 40%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 200px;
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+        }
+        
+        .flows {
+            display: none;
+        }
+        
+        .flow-arrow {
+            display: none;
+        }
+        
+        .flow-line {
+            display: none;
+        }
+        
+        /* フロー矢印の配置 */
+        
+        .info-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 350px;
+            min-width: 300px;
+            max-height: 200px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 200;
+        }
+        
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        
+        .info-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #555;
+        }
+        
+        .legend {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        
+        .legend-color {
+            width: 25px;
+            height: 25px;
+            margin-right: 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .legend-text {
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+            50% { box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
+            100% { box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        }
+        
+        .area.active {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">ecoinvent アルミニウムカテゴリエリア図</div>
+        
+        <div class="main-area">
+            <div class="main-title">アルミニウム全体領域 (Aluminum Domain)</div>
+            
+            <!-- 上部情報パネル -->
+            <div class="info-panel-top" id="info-panel-top">
+                <div class="info-title">エリア情報</div>
+                <div class="info-text" id="info-content-top">
+                    各エリアをクリックして詳細情報を表示してください。<br>
+                    この図は、ecoinventデータベースにおけるアルミニウム関連プロセスを地理的エリアのように表現し、
+                    それぞれの領域内に関連するプロセスやカテゴリをグループ化しています。
+                </div>
+            </div>
+            
+            <!-- フロー線と矢印 -->
+            <div class="flows">
+                <div class="flow-line flow1"></div>
+                <div class="flow-arrow arrow1"></div>
+                <div class="flow-line flow2"></div>
+                <div class="flow-arrow arrow2"></div>
+                <div class="flow-line flow3"></div>
+                <div class="flow-arrow arrow3"></div>
+                <div class="flow-line flow4"></div>
+                <div class="flow-arrow arrow4"></div>
+            </div>
+            
+            <!-- 一次生産エリア -->
+            <div class="area primary-area" onclick="showAreaInfo('primary')">
+                <div class="area-title">一次アルミニウム生産エリア</div>
+                <div class="area-content">
+                    <div class="sub-item">ボーキサイト採掘プロセス</div>
+                    <div class="sub-item">アルミナ精製プロセス</div>
+                    <div class="sub-item">電解製錬プロセス</div>
+                    <div class="sub-item">地域別生産 (中国)</div>
+                    <div class="sub-item">地域別生産 (欧州)</div>
+                    <div class="sub-item">地域別生産 (北米)</div>
+                    <div class="sub-item">地域別生産 (その他)</div>
+                </div>
+            </div>
+            
+            <!-- 二次生産エリア -->
+            <div class="area secondary-area" onclick="showAreaInfo('secondary')">
+                <div class="area-title">二次アルミニウム生産エリア</div>
+                <div class="area-content">
+                    <div class="sub-item">アルミスクラップ回収</div>
+                    <div class="sub-item">スクラップ前処理</div>
+                    <div class="sub-item">溶解・精製プロセス</div>
+                    <div class="sub-item">再生インゴット製造</div>
+                    <div class="sub-item">品質管理・分析</div>
+                    <div class="sub-item">リサイクル効率評価</div>
+                </div>
+            </div>
+            
+            <!-- 合金エリア -->
+            <div class="area alloys-area" onclick="showAreaInfo('alloys')">
+                <div class="area-title">アルミニウム合金エリア</div>
+                <div class="area-content">
+                    <div class="sub-item">1000系 (純アルミニウム系)</div>
+                    <div class="sub-item">2000系 (Al-Cu系合金)</div>
+                    <div class="sub-item">3000系 (Al-Mn系合金)</div>
+                    <div class="sub-item">5000系 (Al-Mg系合金)</div>
+                    <div class="sub-item">6000系 (Al-Mg-Si系合金)</div>
+                    <div class="sub-item">7000系 (Al-Zn系合金)</div>
+                </div>
+            </div>
+            
+            <!-- 加工エリア -->
+            <div class="area processing-area" onclick="showAreaInfo('processing')">
+                <div class="area-title">アルミニウム加工エリア</div>
+                <div class="area-content">
+                    <div class="sub-item">圧延加工 (板材製造)</div>
+                    <div class="sub-item">圧延加工 (箔製造)</div>
+                    <div class="sub-item">押出成形 (形材製造)</div>
+                    <div class="sub-item">鍛造加工 (高強度部品)</div>
+                    <div class="sub-item">鋳造加工 (複雑形状)</div>
+                    <div class="sub-item">表面処理 (陽極酸化)</div>
+                    <div class="sub-item">機械加工 (切削・研磨)</div>
+                    <div class="sub-item">溶接・接合プロセス</div>
+                </div>
+            </div>
+            
+            <!-- 製品エリア -->
+            <div class="area products-area" onclick="showAreaInfo('products')">
+                <div class="area-title">アルミニウム製品エリア</div>
+                <div class="area-content">
+                    <div class="sub-item">建築材料 (窓枠・外装)</div>
+                    <div class="sub-item">建築材料 (構造材)</div>
+                    <div class="sub-item">輸送用 (自動車部品)</div>
+                    <div class="sub-item">輸送用 (航空機部品)</div>
+                    <div class="sub-item">包装材料 (缶・容器)</div>
+                    <div class="sub-item">包装材料 (箔・フィルム)</div>
+                    <div class="sub-item">電子部品 (放熱器)</div>
+                    <div class="sub-item">電子部品 (筐体・コネクタ)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 凡例 -->
+        <div class="legend">
+            <div class="legend-title">エリア分類</div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24);"></div>
+                <span class="legend-text">一次生産</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #4ecdc4, #00b894);"></div>
+                <span class="legend-text">二次生産</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e);"></div>
+                <span class="legend-text">合金</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #45b7d1, #0984e3);"></div>
+                <span class="legend-text">加工</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #96ceb4, #55a3ff);"></div>
+                <span class="legend-text">製品</span>
+            </div>
+        </div>
+        
+        <!-- 情報パネル -->
+        <!-- 右下の固定パネルは削除 -->
+    </div>
+    
+    <script>
+        function showAreaInfo(area) {
+            const infoContent = document.getElementById('info-content-top');
+            const infoTitle = document.querySelector('#info-panel-top .info-title');
+            
+            // 既存のactiveクラスを削除
+            document.querySelectorAll('.area').forEach(el => el.classList.remove('active'));
+            
+            // クリックされたエリアにactiveクラスを追加
+            document.querySelector(`.${area}-area`).classList.add('active');
+            
+            const areaInfo = {
+                primary: {
+                    title: '一次アルミニウム生産エリア',
+                    content: `<strong>原料から新規アルミニウムを生産する領域</strong><br>
+                    このエリアでは、ボーキサイト鉱石から金属アルミニウムまでの全工程を管理します。
+                    主要プロセス：ボーキサイト採掘、アルミナ精製、電解製錬、地域別最適化。
+                    環境負荷：高エネルギー消費（約15kWh/kg）`
+                },
+                secondary: {
+                    title: '二次アルミニウム生産エリア',
+                    content: `<strong>リサイクルアルミニウムの生産領域</strong><br>
+                    使用済みアルミニウム製品を原料として、新しいアルミニウムを生産する循環型エリアです。
+                    主要プロセス：スクラップ回収、前処理、溶解精製、再生インゴット製造。
+                    環境メリット：一次生産比95%のエネルギー削減効果`
+                },
+                alloys: {
+                    title: 'アルミニウム合金エリア',
+                    content: `<strong>用途別合金設計・製造の中心領域</strong><br>
+                    純アルミニウムに各種元素を添加して、用途に応じた特性を持つ合金を設計・製造するエリアです。
+                    合金系統：1000系（純度99%以上）、2000系（銅添加、高強度）、5000系（マグネシウム添加）、6000系（構造材）。
+                    品質管理：成分分析・機械特性試験・組織観察`
+                },
+                processing: {
+                    title: 'アルミニウム加工エリア',
+                    content: `<strong>インゴットから最終形状への加工領域</strong><br>
+                    アルミニウムインゴットや合金を様々な加工技術により最終製品形状に成形するエリアです。
+                    主要加工技術：圧延（板材・箔）、押出（複雑断面形材）、鍛造（高強度部品）、鋳造（複雑形状）、表面処理。
+                    品質保証：寸法精度・表面品質・機械特性管理`
+                },
+                products: {
+                    title: 'アルミニウム製品エリア',
+                    content: `<strong>最終用途別製品の応用領域</strong><br>
+                    加工されたアルミニウム材料が、各産業分野の最終製品として応用される領域です。
+                    主要応用分野：建築（窓枠・構造材）、輸送（自動車・航空機）、包装（缶・容器）、電子（放熱器・筐体）。
+                    ライフサイクル：使用→回収→リサイクルへの循環`
+                }
+            };
+            
+            if (areaInfo[area]) {
+                infoTitle.textContent = areaInfo[area].title;
+                infoContent.innerHTML = areaInfo[area].content;
+            }
+        }
+        
+        // 初期アニメーション
+        document.addEventListener('DOMContentLoaded', function() {
+            const areas = document.querySelectorAll('.area');
+            areas.forEach((area, index) => {
+                area.style.opacity = '0';
+                area.style.transform += ' scale(0.8)';
+                setTimeout(() => {
+                    area.style.transition = 'all 0.6s ease';
+                    area.style.opacity = '1';
+                    area.style.transform = area.style.transform.replace('scale(0.8)', 'scale(1)');
+                }, index * 300 + 500);
+            });
+        });
+    </script>
+</body>
+</html>
