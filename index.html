@@ -26,9 +26,39 @@
             text-align: center;
             font-size: 28px;
             font-weight: bold;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             color: #333;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .breadcrumb {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(52, 73, 94, 0.1);
+            border-radius: 10px;
+        }
+        
+        .breadcrumb-item {
+            display: inline;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .breadcrumb-item:not(:last-child)::after {
+            content: " > ";
+            color: #7f8c8d;
+            margin: 0 8px;
+        }
+        
+        .breadcrumb-item.clickable {
+            cursor: pointer;
+            color: #3498db;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-item.clickable:hover {
+            color: #2980b9;
         }
         
         .main-area {
@@ -40,6 +70,7 @@
             border-radius: 20px;
             margin: 0 auto;
             overflow: hidden;
+            transition: all 0.5s ease;
         }
         
         .main-title {
@@ -89,6 +120,18 @@
             z-index: 50;
         }
         
+        .area.clickable::after {
+            content: "📱 クリックで詳細";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
         .area-title {
             font-size: 18px;
             font-weight: bold;
@@ -123,78 +166,6 @@
             transform: translateX(5px);
             border-left-color: #ffc107;
             background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-        }
-        
-        /* エリア配置 */
-        .primary-area {
-            top: 170px;
-            left: 20px;
-            width: 250px;
-            height: 220px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        }
-        
-        .secondary-area {
-            top: 170px;
-            right: 20px;
-            width: 250px;
-            height: 220px;
-            background: linear-gradient(135deg, #4ecdc4, #00b894);
-        }
-        
-        .processing-area {
-            top: 690px;
-            left: 20px;
-            width: 300px;
-            height: 240px;
-            background: linear-gradient(135deg, #45b7d1, #0984e3);
-        }
-        
-        .products-area {
-            top: 690px;
-            right: 20px;
-            width: 300px;
-            height: 240px;
-            background: linear-gradient(135deg, #96ceb4, #55a3ff);
-        }
-        
-        .alloys-area {
-            top: 420px;
-            left: 40%;
-            transform: translateX(-50%);
-            width: 280px;
-            height: 200px;
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-        }
-        
-        .flows {
-            display: none;
-        }
-        
-        .flow-arrow {
-            display: none;
-        }
-        
-        .flow-line {
-            display: none;
-        }
-        
-        /* フロー矢印の配置 */
-        
-        .info-panel {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 350px;
-            min-width: 300px;
-            max-height: 200px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            z-index: 200;
         }
         
         .info-title {
@@ -252,6 +223,27 @@
             font-weight: 500;
         }
         
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s ease;
+            display: none;
+            z-index: 200;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(231, 76, 60, 0.4);
+        }
+        
         @keyframes pulse {
             0% { box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
             50% { box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
@@ -261,194 +253,581 @@
         .area.active {
             animation: pulse 2s infinite;
         }
+        
+        .fade-transition {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .fade-transition.active {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">ecoinvent アルミニウムカテゴリエリア図</div>
         
-        <div class="main-area">
-            <div class="main-title">アルミニウム全体領域 (Aluminum Domain)</div>
+        <!-- パンくずナビ -->
+        <div class="breadcrumb" id="breadcrumb">
+            <span class="breadcrumb-item">アルミニウム全体</span>
+        </div>
+        
+        <!-- 戻るボタン -->
+        <div class="back-button" id="backButton" onclick="goBack()">← 戻る</div>
+        
+        <div class="main-area fade-transition active" id="mainArea">
+            <div class="main-title" id="mainTitle">アルミニウム全体領域 (Aluminum Domain)</div>
             
             <!-- 上部情報パネル -->
-            <div class="info-panel-top" id="info-panel-top">
+            <div class="info-panel-top" id="infoPanelTop">
                 <div class="info-title">エリア情報</div>
-                <div class="info-text" id="info-content-top">
-                    各エリアをクリックして詳細情報を表示してください。<br>
+                <div class="info-text" id="infoContentTop">
+                    各エリアをクリックして詳細情報を表示するか、詳細エリアに移動してください。<br>
                     この図は、ecoinventデータベースにおけるアルミニウム関連プロセスを地理的エリアのように表現し、
                     それぞれの領域内に関連するプロセスやカテゴリをグループ化しています。
                 </div>
             </div>
             
-            <!-- フロー線と矢印 -->
-            <div class="flows">
-                <div class="flow-line flow1"></div>
-                <div class="flow-arrow arrow1"></div>
-                <div class="flow-line flow2"></div>
-                <div class="flow-arrow arrow2"></div>
-                <div class="flow-line flow3"></div>
-                <div class="flow-arrow arrow3"></div>
-                <div class="flow-line flow4"></div>
-                <div class="flow-arrow arrow4"></div>
-            </div>
-            
-            <!-- 一次生産エリア -->
-            <div class="area primary-area" onclick="showAreaInfo('primary')">
-                <div class="area-title">一次アルミニウム生産エリア</div>
-                <div class="area-content">
-                    <div class="sub-item">ボーキサイト採掘プロセス</div>
-                    <div class="sub-item">アルミナ精製プロセス</div>
-                    <div class="sub-item">電解製錬プロセス</div>
-                    <div class="sub-item">地域別生産 (中国)</div>
-                    <div class="sub-item">地域別生産 (欧州)</div>
-                    <div class="sub-item">地域別生産 (北米)</div>
-                    <div class="sub-item">地域別生産 (その他)</div>
-                </div>
-            </div>
-            
-            <!-- 二次生産エリア -->
-            <div class="area secondary-area" onclick="showAreaInfo('secondary')">
-                <div class="area-title">二次アルミニウム生産エリア</div>
-                <div class="area-content">
-                    <div class="sub-item">アルミスクラップ回収</div>
-                    <div class="sub-item">スクラップ前処理</div>
-                    <div class="sub-item">溶解・精製プロセス</div>
-                    <div class="sub-item">再生インゴット製造</div>
-                    <div class="sub-item">品質管理・分析</div>
-                    <div class="sub-item">リサイクル効率評価</div>
-                </div>
-            </div>
-            
-            <!-- 合金エリア -->
-            <div class="area alloys-area" onclick="showAreaInfo('alloys')">
-                <div class="area-title">アルミニウム合金エリア</div>
-                <div class="area-content">
-                    <div class="sub-item">1000系 (純アルミニウム系)</div>
-                    <div class="sub-item">2000系 (Al-Cu系合金)</div>
-                    <div class="sub-item">3000系 (Al-Mn系合金)</div>
-                    <div class="sub-item">5000系 (Al-Mg系合金)</div>
-                    <div class="sub-item">6000系 (Al-Mg-Si系合金)</div>
-                    <div class="sub-item">7000系 (Al-Zn系合金)</div>
-                </div>
-            </div>
-            
-            <!-- 加工エリア -->
-            <div class="area processing-area" onclick="showAreaInfo('processing')">
-                <div class="area-title">アルミニウム加工エリア</div>
-                <div class="area-content">
-                    <div class="sub-item">圧延加工 (板材製造)</div>
-                    <div class="sub-item">圧延加工 (箔製造)</div>
-                    <div class="sub-item">押出成形 (形材製造)</div>
-                    <div class="sub-item">鍛造加工 (高強度部品)</div>
-                    <div class="sub-item">鋳造加工 (複雑形状)</div>
-                    <div class="sub-item">表面処理 (陽極酸化)</div>
-                    <div class="sub-item">機械加工 (切削・研磨)</div>
-                    <div class="sub-item">溶接・接合プロセス</div>
-                </div>
-            </div>
-            
-            <!-- 製品エリア -->
-            <div class="area products-area" onclick="showAreaInfo('products')">
-                <div class="area-title">アルミニウム製品エリア</div>
-                <div class="area-content">
-                    <div class="sub-item">建築材料 (窓枠・外装)</div>
-                    <div class="sub-item">建築材料 (構造材)</div>
-                    <div class="sub-item">輸送用 (自動車部品)</div>
-                    <div class="sub-item">輸送用 (航空機部品)</div>
-                    <div class="sub-item">包装材料 (缶・容器)</div>
-                    <div class="sub-item">包装材料 (箔・フィルム)</div>
-                    <div class="sub-item">電子部品 (放熱器)</div>
-                    <div class="sub-item">電子部品 (筐体・コネクタ)</div>
-                </div>
-            </div>
+            <!-- 動的にエリアが生成される場所 -->
+            <div id="areasContainer"></div>
         </div>
         
         <!-- 凡例 -->
         <div class="legend">
             <div class="legend-title">エリア分類</div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24);"></div>
-                <span class="legend-text">一次生産</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #4ecdc4, #00b894);"></div>
-                <span class="legend-text">二次生産</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e);"></div>
-                <span class="legend-text">合金</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #45b7d1, #0984e3);"></div>
-                <span class="legend-text">加工</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: linear-gradient(135deg, #96ceb4, #55a3ff);"></div>
-                <span class="legend-text">製品</span>
+            <div id="legendContent">
+                <!-- 動的に生成 -->
             </div>
         </div>
-        
-        <!-- 情報パネル -->
-        <!-- 右下の固定パネルは削除 -->
     </div>
     
     <script>
-        function showAreaInfo(area) {
-            const infoContent = document.getElementById('info-content-top');
-            const infoTitle = document.querySelector('#info-panel-top .info-title');
+        // 階層データ定義
+        const areaHierarchy = {
+            "main": {
+                "title": "アルミニウム全体領域 (Aluminum Domain)",
+                "areas": {
+                    "primary_production": {
+                        "name": "一次アルミニウム生産エリア",
+                        "color": "linear-gradient(135deg, #ff6b6b, #ee5a24)",
+                        "position": {"top": 170, "left": 20, "width": 250, "height": 220},
+                        "sub_items": [
+                            "ボーキサイト採掘プロセス",
+                            "アルミナ精製プロセス", 
+                            "電解製錬プロセス",
+                            "地域別生産 (中国)",
+                            "地域別生産 (欧州)",
+                            "地域別生産 (北米)",
+                            "地域別生産 (その他)"
+                        ],
+                        "has_detail": true,
+                        "legend_color": "#ff6b6b"
+                    },
+                    "secondary_production": {
+                        "name": "二次アルミニウム生産エリア",
+                        "color": "linear-gradient(135deg, #4ecdc4, #00b894)",
+                        "position": {"top": 170, "right": 20, "width": 250, "height": 220},
+                        "sub_items": [
+                            "アルミスクラップ回収",
+                            "スクラップ前処理",
+                            "溶解・精製プロセス",
+                            "再生インゴット製造",
+                            "品質管理・分析",
+                            "リサイクル効率評価"
+                        ],
+                        "has_detail": true,
+                        "legend_color": "#4ecdc4"
+                    },
+                    "alloys": {
+                        "name": "アルミニウム合金エリア", 
+                        "color": "linear-gradient(135deg, #ffeaa7, #fdcb6e)",
+                        "position": {"top": 420, "left": "40%", "transform": "translateX(-50%)", "width": 280, "height": 200},
+                        "sub_items": [
+                            "1000系 (純アルミニウム系)",
+                            "2000系 (Al-Cu系合金)",
+                            "3000系 (Al-Mn系合金)", 
+                            "5000系 (Al-Mg系合金)",
+                            "6000系 (Al-Mg-Si系合金)",
+                            "7000系 (Al-Zn系合金)"
+                        ],
+                        "has_detail": true,
+                        "legend_color": "#ffeaa7"
+                    },
+                    "processing": {
+                        "name": "アルミニウム加工エリア",
+                        "color": "linear-gradient(135deg, #45b7d1, #0984e3)",
+                        "position": {"top": 690, "left": 20, "width": 300, "height": 240},
+                        "sub_items": [
+                            "圧延加工 (板材製造)",
+                            "圧延加工 (箔製造)",
+                            "押出成形 (形材製造)",
+                            "鍛造加工 (高強度部品)",
+                            "鋳造加工 (複雑形状)",
+                            "表面処理 (陽極酸化)",
+                            "機械加工 (切削・研磨)",
+                            "溶接・接合プロセス"
+                        ],
+                        "has_detail": true,
+                        "legend_color": "#45b7d1"
+                    },
+                    "products": {
+                        "name": "アルミニウム製品エリア",
+                        "color": "linear-gradient(135deg, #96ceb4, #55a3ff)",
+                        "position": {"top": 690, "right": 20, "width": 300, "height": 240},
+                        "sub_items": [
+                            "建築材料 (窓枠・外装)",
+                            "建築材料 (構造材)",
+                            "輸送用 (自動車部品)",
+                            "輸送用 (航空機部品)",
+                            "包装材料 (缶・容器)",
+                            "包装材料 (箔・フィルム)",
+                            "電子部品 (放熱器)",
+                            "電子部品 (筐体・コネクタ)"
+                        ],
+                        "has_detail": true,
+                        "legend_color": "#96ceb4"
+                    }
+                }
+            },
+            
+            // 一次生産エリアの詳細
+            "primary_production": {
+                "title": "一次アルミニウム生産エリア詳細",
+                "parent": "main",
+                "areas": {
+                    "bauxite_mining": {
+                        "name": "ボーキサイト採掘",
+                        "color": "linear-gradient(135deg, #e74c3c, #c0392b)",
+                        "position": {"top": 150, "left": 50, "width": 200, "height": 180},
+                        "sub_items": [
+                            "露天掘り採掘",
+                            "地下採掘",
+                            "鉱石品質管理",
+                            "環境影響評価",
+                            "採掘後復旧"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#e74c3c"
+                    },
+                    "alumina_refining": {
+                        "name": "アルミナ精製",
+                        "color": "linear-gradient(135deg, #c0392b, #a93226)",
+                        "position": {"top": 150, "right": 50, "width": 200, "height": 180},
+                        "sub_items": [
+                            "バイヤー法プロセス",
+                            "赤泥処理",
+                            "結晶化工程",
+                            "焼成工程",
+                            "品質検査"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#c0392b"
+                    },
+                    "electrolysis": {
+                        "name": "電解製錬",
+                        "color": "linear-gradient(135deg, #a93226, #922b21)",
+                        "position": {"top": 400, "left": "50%", "transform": "translateX(-50%)", "width": 220, "height": 200},
+                        "sub_items": [
+                            "ホール・エルー法",
+                            "電解槽管理",
+                            "陽極・陰極管理",
+                            "電力供給システム",
+                            "溶融アルミニウム処理"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#a93226"
+                    },
+                    "regional_china": {
+                        "name": "中国地域生産",
+                        "color": "linear-gradient(135deg, #922b21, #7b241c)",
+                        "position": {"top": 650, "left": 30, "width": 180, "height": 160},
+                        "sub_items": [
+                            "石炭火力発電依存",
+                            "内モンゴル生産基地",
+                            "新疆ウイグル生産基地",
+                            "環境規制対応",
+                            "生産能力拡張"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#922b21"
+                    },
+                    "regional_europe": {
+                        "name": "欧州地域生産",
+                        "color": "linear-gradient(135deg, #7b241c, #641e16)",
+                        "position": {"top": 650, "left": 230, "width": 180, "height": 160},
+                        "sub_items": [
+                            "水力発電利用",
+                            "ノルウェー生産基地",
+                            "アイスランド生産基地",
+                            "再生可能エネルギー",
+                            "EU規制対応"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#7b241c"
+                    },
+                    "regional_americas": {
+                        "name": "北米地域生産",
+                        "color": "linear-gradient(135deg, #641e16, #4a1410)",
+                        "position": {"top": 650, "right": 30, "width": 180, "height": 160},
+                        "sub_items": [
+                            "カナダ水力発電",
+                            "米国天然ガス発電",
+                            "ケベック州生産基地",
+                            "NAFTA協定影響",
+                            "炭素税対応"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#641e16"
+                    }
+                }
+            },
+            
+            // 二次生産エリアの詳細
+            "secondary_production": {
+                "title": "二次アルミニウム生産エリア詳細",
+                "parent": "main",
+                "areas": {
+                    "scrap_collection": {
+                        "name": "スクラップ回収システム",
+                        "color": "linear-gradient(135deg, #17a2b8, #138496)",
+                        "position": {"top": 150, "left": 50, "width": 220, "height": 180},
+                        "sub_items": [
+                            "建築廃材回収",
+                            "自動車解体スクラップ",
+                            "飲料缶回収",
+                            "産業スクラップ",
+                            "分別・仕分けシステム"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#17a2b8"
+                    },
+                    "preprocessing": {
+                        "name": "前処理工程",
+                        "color": "linear-gradient(135deg, #138496, #0f6674)",
+                        "position": {"top": 150, "right": 50, "width": 200, "height": 180},
+                        "sub_items": [
+                            "磁気分離",
+                            "渦電流分離",
+                            "破砕・裁断",
+                            "洗浄・脱脂",
+                            "合金分別"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#138496"
+                    },
+                    "melting_refining": {
+                        "name": "溶解・精製プロセス",
+                        "color": "linear-gradient(135deg, #0f6674, #0a525a)",
+                        "position": {"top": 400, "left": "50%", "transform": "translateX(-50%)", "width": 240, "height": 200},
+                        "sub_items": [
+                            "反射炉溶解",
+                            "回転炉溶解",
+                            "フラックス処理",
+                            "ガス除去",
+                            "介在物除去"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#0f6674"
+                    },
+                    "quality_control": {
+                        "name": "品質管理・分析",
+                        "color": "linear-gradient(135deg, #0a525a, #073e47)",
+                        "position": {"top": 650, "left": 50, "width": 200, "height": 160},
+                        "sub_items": [
+                            "化学成分分析",
+                            "機械特性試験",
+                            "組織観察",
+                            "不純物検査",
+                            "トレーサビリティ"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#0a525a"
+                    },
+                    "secondary_ingot": {
+                        "name": "再生インゴット製造",
+                        "color": "linear-gradient(135deg, #073e47, #042a2f)",
+                        "position": {"top": 650, "right": 50, "width": 200, "height": 160},
+                        "sub_items": [
+                            "鋳造技術",
+                            "冷却制御",
+                            "表面仕上げ",
+                            "寸法精度管理",
+                            "出荷準備"
+                        ],
+                        "has_detail": false,
+                        "legend_color": "#073e47"
+                    }
+                }
+            }
+        };
+        
+        // 現在の状態管理
+        let currentLevel = "main";
+        let breadcrumb = ["アルミニウム全体"];
+        
+        // エリア詳細情報
+        const areaInfo = {
+            // メインレベル
+            primary: {
+                title: '一次アルミニウム生産エリア',
+                content: `<strong>原料から新規アルミニウムを生産する領域</strong><br>
+                このエリアでは、ボーキサイト鉱石から金属アルミニウムまでの全工程を管理します。
+                主要プロセス：ボーキサイト採掘、アルミナ精製、電解製錬、地域別最適化。
+                環境負荷：高エネルギー消費（約15kWh/kg）`
+            },
+            secondary: {
+                title: '二次アルミニウム生産エリア',
+                content: `<strong>リサイクルアルミニウムの生産領域</strong><br>
+                使用済みアルミニウム製品を原料として、新しいアルミニウムを生産する循環型エリアです。
+                主要プロセス：スクラップ回収、前処理、溶解精製、再生インゴット製造。
+                環境メリット：一次生産比95%のエネルギー削減効果`
+            },
+            alloys: {
+                title: 'アルミニウム合金エリア',
+                content: `<strong>用途別合金設計・製造の中心領域</strong><br>
+                純アルミニウムに各種元素を添加して、用途に応じた特性を持つ合金を設計・製造するエリアです。
+                合金系統：1000系（純度99%以上）、2000系（銅添加、高強度）、5000系（マグネシウム添加）、6000系（構造材）。
+                品質管理：成分分析・機械特性試験・組織観察`
+            },
+            processing: {
+                title: 'アルミニウム加工エリア',
+                content: `<strong>インゴットから最終形状への加工領域</strong><br>
+                アルミニウムインゴットや合金を様々な加工技術により最終製品形状に成形するエリアです。
+                主要加工技術：圧延（板材・箔）、押出（複雑断面形材）、鍛造（高強度部品）、鋳造（複雑形状）、表面処理。
+                品質保証：寸法精度・表面品質・機械特性管理`
+            },
+            products: {
+                title: 'アルミニウム製品エリア',
+                content: `<strong>最終用途別製品の応用領域</strong><br>
+                加工されたアルミニウム材料が、各産業分野の最終製品として応用される領域です。
+                主要応用分野：建築（窓枠・構造材）、輸送（自動車・航空機）、包装（缶・容器）、電子（放熱器・筐体）。
+                ライフサイクル：使用→回収→リサイクルへの循環`
+            },
+            // 詳細レベル
+            bauxite_mining: {
+                title: 'ボーキサイト採掘',
+                content: `<strong>アルミニウムの原料となるボーキサイト鉱石の採掘工程</strong><br>
+                主に露天掘りで採掘され、品質管理と環境配慮が重要。採掘後の土地復旧も含む持続可能な採掘が求められます。`
+            },
+            alumina_refining: {
+                title: 'アルミナ精製',
+                content: `<strong>ボーキサイトからアルミナ（酸化アルミニウム）を抽出する工程</strong><br>
+                バイヤー法を使用し、赤泥という副産物の適切な処理が環境上の課題となっています。`
+            },
+            electrolysis: {
+                title: '電解製錬',
+                content: `<strong>アルミナから金属アルミニウムを製錬する工程</strong><br>
+                ホール・エルー法により、大量の電力を使用してアルミニウムを生産します。エネルギー効率が重要な要素です。`
+            },
+            scrap_collection: {
+                title: 'スクラップ回収システム',
+                content: `<strong>使用済みアルミニウム製品の効率的な回収システム</strong><br>
+                建築、輸送、包装など各分野からの回収ネットワークと分別システムが重要です。`
+            },
+            preprocessing: {
+                title: '前処理工程',
+                content: `<strong>スクラップの溶解前準備工程</strong><br>
+                磁気分離や渦電流分離により他の金属を除去し、破砕・洗浄を行って溶解に適した状態にします。`
+            }
+        };
+        
+        // 初期表示
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCurrentLevel();
+        });
+        
+        // 現在のレベルを描画
+        function renderCurrentLevel() {
+            const levelData = areaHierarchy[currentLevel];
+            const container = document.getElementById('areasContainer');
+            const mainTitle = document.getElementById('mainTitle');
+            const backButton = document.getElementById('backButton');
+            
+            // タイトル更新
+            mainTitle.textContent = levelData.title;
+            
+            // 戻るボタンの表示/非表示
+            if (currentLevel !== 'main') {
+                backButton.style.display = 'block';
+            } else {
+                backButton.style.display = 'none';
+            }
+            
+            // コンテナをクリア
+            container.innerHTML = '';
+            
+            // エリアを生成
+            Object.keys(levelData.areas).forEach(areaKey => {
+                const areaData = levelData.areas[areaKey];
+                const areaElement = createAreaElement(areaKey, areaData);
+                container.appendChild(areaElement);
+            });
+            
+            // 凡例を更新
+            updateLegend(levelData.areas);
+            
+            // パンくずを更新
+            updateBreadcrumb();
+        }
+        
+        // エリア要素を作成
+        function createAreaElement(areaKey, areaData) {
+            const area = document.createElement('div');
+            area.className = `area ${areaData.has_detail ? 'clickable' : ''}`;
+            area.style.background = areaData.color;
+            
+            // 位置設定
+            const pos = areaData.position;
+            Object.keys(pos).forEach(prop => {
+                if (prop === 'left' && pos[prop].toString().includes('%')) {
+                    area.style.left = pos[prop];
+                } else if (prop === 'right') {
+                    area.style.right = pos[prop] + 'px';
+                } else if (prop === 'transform') {
+                    area.style.transform = pos[prop];
+                } else if (typeof pos[prop] === 'number') {
+                    area.style[prop] = pos[prop] + 'px';
+                } else {
+                    area.style[prop] = pos[prop];
+                }
+            });
+            
+            // クリックイベント
+            if (areaData.has_detail) {
+                area.addEventListener('click', () => navigateToDetail(areaKey));
+            } else {
+                area.addEventListener('click', () => showAreaInfo(areaKey));
+            }
+            
+            // タイトル
+            const title = document.createElement('div');
+            title.className = 'area-title';
+            title.textContent = areaData.name;
+            area.appendChild(title);
+            
+            // コンテンツ
+            const content = document.createElement('div');
+            content.className = 'area-content';
+            
+            areaData.sub_items.forEach(item => {
+                const subItem = document.createElement('div');
+                subItem.className = 'sub-item';
+                subItem.textContent = item;
+                content.appendChild(subItem);
+            });
+            
+            area.appendChild(content);
+            
+            return area;
+        }
+        
+        // 詳細画面に遷移
+        function navigateToDetail(areaKey) {
+            if (areaHierarchy[areaKey]) {
+                currentLevel = areaKey;
+                breadcrumb.push(areaHierarchy[areaKey].title);
+                
+                // フェードアウト → フェードイン
+                const mainArea = document.getElementById('mainArea');
+                mainArea.classList.remove('active');
+                
+                setTimeout(() => {
+                    renderCurrentLevel();
+                    mainArea.classList.add('active');
+                }, 300);
+            }
+        }
+        
+        // 戻る
+        function goBack() {
+            if (currentLevel !== 'main') {
+                const parentLevel = areaHierarchy[currentLevel].parent || 'main';
+                currentLevel = parentLevel;
+                breadcrumb.pop();
+                
+                // フェードアウト → フェードイン
+                const mainArea = document.getElementById('mainArea');
+                mainArea.classList.remove('active');
+                
+                setTimeout(() => {
+                    renderCurrentLevel();
+                    mainArea.classList.add('active');
+                }, 300);
+            }
+        }
+        
+        // エリア情報表示
+        function showAreaInfo(areaKey) {
+            const infoContent = document.getElementById('infoContentTop');
+            const infoTitle = document.querySelector('#infoPanelTop .info-title');
             
             // 既存のactiveクラスを削除
             document.querySelectorAll('.area').forEach(el => el.classList.remove('active'));
             
             // クリックされたエリアにactiveクラスを追加
-            document.querySelector(`.${area}-area`).classList.add('active');
+            const areaElement = document.querySelector(`[data-key="${areaKey}"]`);
+            if (areaElement) {
+                areaElement.classList.add('active');
+            }
             
-            const areaInfo = {
-                primary: {
-                    title: '一次アルミニウム生産エリア',
-                    content: `<strong>原料から新規アルミニウムを生産する領域</strong><br>
-                    このエリアでは、ボーキサイト鉱石から金属アルミニウムまでの全工程を管理します。
-                    主要プロセス：ボーキサイト採掘、アルミナ精製、電解製錬、地域別最適化。
-                    環境負荷：高エネルギー消費（約15kWh/kg）`
-                },
-                secondary: {
-                    title: '二次アルミニウム生産エリア',
-                    content: `<strong>リサイクルアルミニウムの生産領域</strong><br>
-                    使用済みアルミニウム製品を原料として、新しいアルミニウムを生産する循環型エリアです。
-                    主要プロセス：スクラップ回収、前処理、溶解精製、再生インゴット製造。
-                    環境メリット：一次生産比95%のエネルギー削減効果`
-                },
-                alloys: {
-                    title: 'アルミニウム合金エリア',
-                    content: `<strong>用途別合金設計・製造の中心領域</strong><br>
-                    純アルミニウムに各種元素を添加して、用途に応じた特性を持つ合金を設計・製造するエリアです。
-                    合金系統：1000系（純度99%以上）、2000系（銅添加、高強度）、5000系（マグネシウム添加）、6000系（構造材）。
-                    品質管理：成分分析・機械特性試験・組織観察`
-                },
-                processing: {
-                    title: 'アルミニウム加工エリア',
-                    content: `<strong>インゴットから最終形状への加工領域</strong><br>
-                    アルミニウムインゴットや合金を様々な加工技術により最終製品形状に成形するエリアです。
-                    主要加工技術：圧延（板材・箔）、押出（複雑断面形材）、鍛造（高強度部品）、鋳造（複雑形状）、表面処理。
-                    品質保証：寸法精度・表面品質・機械特性管理`
-                },
-                products: {
-                    title: 'アルミニウム製品エリア',
-                    content: `<strong>最終用途別製品の応用領域</strong><br>
-                    加工されたアルミニウム材料が、各産業分野の最終製品として応用される領域です。
-                    主要応用分野：建築（窓枠・構造材）、輸送（自動車・航空機）、包装（缶・容器）、電子（放熱器・筐体）。
-                    ライフサイクル：使用→回収→リサイクルへの循環`
-                }
-            };
-            
-            if (areaInfo[area]) {
-                infoTitle.textContent = areaInfo[area].title;
-                infoContent.innerHTML = areaInfo[area].content;
+            if (areaInfo[areaKey]) {
+                infoTitle.textContent = areaInfo[areaKey].title;
+                infoContent.innerHTML = areaInfo[areaKey].content;
             }
         }
         
+        // 凡例更新
+        function updateLegend(areas) {
+            const legendContent = document.getElementById('legendContent');
+            legendContent.innerHTML = '';
+            
+            Object.values(areas).forEach(areaData => {
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                
+                const colorBox = document.createElement('div');
+                colorBox.className = 'legend-color';
+                colorBox.style.background = areaData.legend_color;
+                
+                const text = document.createElement('span');
+                text.className = 'legend-text';
+                text.textContent = areaData.name.replace('エリア', '');
+                
+                legendItem.appendChild(colorBox);
+                legendItem.appendChild(text);
+                legendContent.appendChild(legendItem);
+            });
+        }
+        
+        // パンくず更新
+        function updateBreadcrumb() {
+            const breadcrumbContainer = document.getElementById('breadcrumb');
+            breadcrumbContainer.innerHTML = '';
+            
+            breadcrumb.forEach((item, index) => {
+                const breadcrumbItem = document.createElement('span');
+                breadcrumbItem.className = 'breadcrumb-item';
+                breadcrumbItem.textContent = item;
+                
+                if (index < breadcrumb.length - 1) {
+                    breadcrumbItem.classList.add('clickable');
+                    breadcrumbItem.addEventListener('click', () => {
+                        // パンくずクリックで該当レベルに戻る
+                        if (index === 0) {
+                            currentLevel = 'main';
+                            breadcrumb = ['アルミニウム全体'];
+                        }
+                        renderCurrentLevel();
+                    });
+                }
+                
+                breadcrumbContainer.appendChild(breadcrumbItem);
+            });
+        }
+        
         // 初期アニメーション
-        document.addEventListener('DOMContentLoaded', function() {
+        function initializeAnimation() {
             const areas = document.querySelectorAll('.area');
             areas.forEach((area, index) => {
                 area.style.opacity = '0';
@@ -457,9 +836,12 @@
                     area.style.transition = 'all 0.6s ease';
                     area.style.opacity = '1';
                     area.style.transform = area.style.transform.replace('scale(0.8)', 'scale(1)');
-                }, index * 300 + 500);
+                }, index * 200 + 500);
             });
-        });
+        }
+        
+        // レンダリング後にアニメーション実行
+        setTimeout(initializeAnimation, 100);
     </script>
 </body>
 </html>
