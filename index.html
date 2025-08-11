@@ -344,6 +344,141 @@
         .fade-transition.active {
             opacity: 1;
         }
+        
+        .clickable-sub-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .clickable-sub-item:hover {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb) !important;
+            transform: translateX(8px);
+            border-left-color: #2196f3 !important;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+        
+        .clickable-sub-item::after {
+            content: "📋 クリックで詳細";
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            font-size: 10px;
+            color: rgba(0,0,0,0.5);
+            background: rgba(255,255,255,0.8);
+            padding: 1px 6px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .clickable-sub-item:hover::after {
+            opacity: 1;
+        }
+        
+        /* モーダルスタイル */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 800px;
+            max-height: 80vh;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            background: rgba(0,0,0,0.1);
+            color: #333;
+        }
+        
+        .activity-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .activity-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .activity-item:hover {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+        }
+        
+        .activity-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .activity-name {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .activity-description {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -380,6 +515,19 @@
             <div class="legend-title">エリア分類</div>
             <div id="legendContent">
                 <!-- 動的に生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Activity ID モーダル -->
+    <div class="modal-overlay" id="activityModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Activity ID 一覧</h2>
+                <button class="modal-close" onclick="closeActivityModal()">&times;</button>
+            </div>
+            <div class="activity-list" id="activityList">
+                <!-- 動的に生成される -->
             </div>
         </div>
     </div>
@@ -605,6 +753,40 @@
         // 現在の状態管理
         let currentLevel = "main";
         let breadcrumb = ["アルミニウム全体"];
+        
+        // Activity ID サンプルデータ
+        const activityData = {
+            "露天掘り採掘": {
+                title: "露天掘り採掘 - Activity ID 一覧",
+                activities: [
+                    {
+                        id: "bauxite_mining_openpit_001",
+                        name: "ボーキサイト採掘（露天掘り、オーストラリア）",
+                        description: "オーストラリアにおけるボーキサイト鉱石の露天採掘プロセス。大型重機を使用した表土剥離と採掘作業を含む。"
+                    },
+                    {
+                        id: "bauxite_mining_openpit_002", 
+                        name: "ボーキサイト採掘（露天掘り、ブラジル）",
+                        description: "ブラジルアマゾン地域でのボーキサイト採掘。環境配慮型の採掘手法と土地復旧プログラムを含む。"
+                    },
+                    {
+                        id: "bauxite_mining_openpit_003",
+                        name: "ボーキサイト採掘（露天掘り、ギニア）",
+                        description: "西アフリカギニアでの高品位ボーキサイト採掘。港湾輸送インフラとの統合プロセス。"
+                    },
+                    {
+                        id: "bauxite_mining_openpit_004",
+                        name: "ボーキサイト採掘（露天掘り、ジャマイカ）",
+                        description: "カリブ海地域での中品位ボーキサイト採掘。島嶼部特有の物流制約を考慮したプロセス。"
+                    },
+                    {
+                        id: "bauxite_mining_openpit_005",
+                        name: "ボーキサイト採掘（露天掘り、インド）",
+                        description: "インド東部での小規模分散型ボーキサイト採掘。地域コミュニティとの協働採掘プログラム。"
+                    }
+                ]
+            }
+        };
         
         // エリア詳細情報
         const areaInfo = {
@@ -834,6 +1016,17 @@
             areaData.sub_items.forEach(item => {
                 const subItem = document.createElement('div');
                 subItem.className = 'sub-item';
+                
+                // 露天掘り採掘の場合はクリック可能にする
+                if (item === '露天掘り採掘') {
+                    subItem.classList.add('clickable-sub-item');
+                    subItem.style.position = 'relative';
+                    subItem.addEventListener('click', (e) => {
+                        e.stopPropagation(); // 親要素のイベントを防ぐ
+                        showActivityModal(item);
+                    });
+                }
+                
                 subItem.textContent = item;
                 content.appendChild(subItem);
             });
@@ -986,6 +1179,56 @@
         
         // レンダリング後にアニメーション実行
         setTimeout(initializeAnimation, 100);
+        
+        // Activity Modal 関連関数
+        function showActivityModal(itemName) {
+            const modal = document.getElementById('activityModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const activityList = document.getElementById('activityList');
+            
+            if (activityData[itemName]) {
+                const data = activityData[itemName];
+                modalTitle.textContent = data.title;
+                
+                // Activity一覧を生成
+                activityList.innerHTML = '';
+                data.activities.forEach(activity => {
+                    const activityElement = document.createElement('div');
+                    activityElement.className = 'activity-item';
+                    
+                    activityElement.innerHTML = `
+                        <div class="activity-id">${activity.id}</div>
+                        <div class="activity-name">${activity.name}</div>
+                        <div class="activity-description">${activity.description}</div>
+                    `;
+                    
+                    activityList.appendChild(activityElement);
+                });
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // スクロール無効化
+            }
+        }
+        
+        function closeActivityModal() {
+            const modal = document.getElementById('activityModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // スクロール有効化
+        }
+        
+        // モーダル外クリックで閉じる
+        document.getElementById('activityModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeActivityModal();
+            }
+        });
+        
+        // ESCキーで閉じる
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeActivityModal();
+            }
+        });
     </script>
 </body>
 </html>
