@@ -13,6 +13,12 @@
             min-height: 100vh;
         }
         
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+        }
+        
         .container {
             max-width: 1600px;
             margin: 0 auto;
@@ -20,6 +26,20 @@
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 95%;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                border-radius: 10px;
+            }
         }
         
         .title {
@@ -64,13 +84,26 @@
         .main-area {
             position: relative;
             width: 100%;
-            height: 980px;
+            height: 1200px;
             background: linear-gradient(45deg, #f8f9fa, #e9ecef);
             border: 3px solid #333;
             border-radius: 20px;
             margin: 0 auto;
             overflow: hidden;
             transition: all 0.5s ease;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-area {
+                height: 1000px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-area {
+                height: 1400px;
+                border: 2px solid #333;
+            }
         }
         
         .main-title {
@@ -114,6 +147,15 @@
             border: 2px solid rgba(255,255,255,0.3);
         }
         
+        @media (max-width: 768px) {
+            .area {
+                padding: 15px;
+                border-radius: 10px;
+                min-width: 250px !important;
+                min-height: 200px !important;
+            }
+        }
+        
         .area:hover {
             transform: scale(1.05);
             box-shadow: 0 12px 35px rgba(0,0,0,0.25);
@@ -139,6 +181,14 @@
             margin-bottom: 15px;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+        
+        @media (max-width: 768px) {
+            .area-title {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
         }
         
         .area-content {
@@ -152,14 +202,23 @@
         .sub-item {
             background: linear-gradient(135deg, #fff, #f8f9fa);
             margin: 8px 0;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             color: #333;
             border-left: 4px solid #007bff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .sub-item {
+                font-size: 13px;
+                padding: 10px;
+                margin: 6px 0;
+            }
         }
         
         .sub-item:hover {
@@ -178,9 +237,15 @@
         }
         
         .info-text {
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 14px;
+            line-height: 1.6;
             color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            .info-text {
+                font-size: 13px;
+            }
         }
         
         .legend {
@@ -193,6 +258,17 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
+            max-width: 250px;
+        }
+        
+        @media (max-width: 768px) {
+            .legend {
+                bottom: 20px;
+                left: 20px;
+                padding: 15px;
+                max-width: 200px;
+                border-radius: 10px;
+            }
         }
         
         .legend-title {
@@ -311,7 +387,7 @@
                     "primary_production": {
                         "name": "一次アルミニウム生産エリア",
                         "color": "linear-gradient(135deg, #ff6b6b, #ee5a24)",
-                        "position": {"top": 170, "left": 20, "width": 250, "height": 220},
+                        "position": {"top": 170, "left": 30, "width": 280, "height": 250},
                         "sub_items": [
                             "ボーキサイト採掘プロセス",
                             "アルミナ精製プロセス", 
@@ -327,7 +403,7 @@
                     "secondary_production": {
                         "name": "二次アルミニウム生産エリア",
                         "color": "linear-gradient(135deg, #4ecdc4, #00b894)",
-                        "position": {"top": 170, "right": 20, "width": 250, "height": 220},
+                        "position": {"top": 170, "right": 30, "width": 280, "height": 250},
                         "sub_items": [
                             "アルミスクラップ回収",
                             "スクラップ前処理",
@@ -342,7 +418,7 @@
                     "alloys": {
                         "name": "アルミニウム合金エリア", 
                         "color": "linear-gradient(135deg, #ffeaa7, #fdcb6e)",
-                        "position": {"top": 420, "left": "40%", "transform": "translateX(-50%)", "width": 280, "height": 200},
+                        "position": {"top": 460, "left": "50%", "transform": "translateX(-50%)", "width": 320, "height": 220},
                         "sub_items": [
                             "1000系 (純アルミニウム系)",
                             "2000系 (Al-Cu系合金)",
@@ -357,7 +433,7 @@
                     "processing": {
                         "name": "アルミニウム加工エリア",
                         "color": "linear-gradient(135deg, #45b7d1, #0984e3)",
-                        "position": {"top": 690, "left": 20, "width": 300, "height": 240},
+                        "position": {"top": 720, "left": 30, "width": 320, "height": 260},
                         "sub_items": [
                             "圧延加工 (板材製造)",
                             "圧延加工 (箔製造)",
@@ -374,7 +450,7 @@
                     "products": {
                         "name": "アルミニウム製品エリア",
                         "color": "linear-gradient(135deg, #96ceb4, #55a3ff)",
-                        "position": {"top": 690, "right": 20, "width": 300, "height": 240},
+                        "position": {"top": 720, "right": 30, "width": 320, "height": 260},
                         "sub_items": [
                             "建築材料 (窓枠・外装)",
                             "建築材料 (構造材)",
@@ -399,7 +475,7 @@
                     "bauxite_mining": {
                         "name": "ボーキサイト採掘",
                         "color": "linear-gradient(135deg, #e74c3c, #c0392b)",
-                        "position": {"top": 150, "left": 50, "width": 200, "height": 180},
+                        "position": {"top": 160, "left": 60, "width": 220, "height": 200},
                         "sub_items": [
                             "露天掘り採掘",
                             "地下採掘",
@@ -413,7 +489,7 @@
                     "alumina_refining": {
                         "name": "アルミナ精製",
                         "color": "linear-gradient(135deg, #c0392b, #a93226)",
-                        "position": {"top": 150, "right": 50, "width": 200, "height": 180},
+                        "position": {"top": 160, "right": 60, "width": 220, "height": 200},
                         "sub_items": [
                             "バイヤー法プロセス",
                             "赤泥処理",
@@ -427,7 +503,7 @@
                     "electrolysis": {
                         "name": "電解製錬",
                         "color": "linear-gradient(135deg, #a93226, #922b21)",
-                        "position": {"top": 400, "left": "50%", "transform": "translateX(-50%)", "width": 220, "height": 200},
+                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 260, "height": 220},
                         "sub_items": [
                             "ホール・エルー法",
                             "電解槽管理",
@@ -441,7 +517,7 @@
                     "regional_china": {
                         "name": "中国地域生産",
                         "color": "linear-gradient(135deg, #922b21, #7b241c)",
-                        "position": {"top": 650, "left": 30, "width": 180, "height": 160},
+                        "position": {"top": 680, "left": 40, "width": 200, "height": 180},
                         "sub_items": [
                             "石炭火力発電依存",
                             "内モンゴル生産基地",
@@ -455,7 +531,7 @@
                     "regional_europe": {
                         "name": "欧州地域生産",
                         "color": "linear-gradient(135deg, #7b241c, #641e16)",
-                        "position": {"top": 650, "left": 230, "width": 180, "height": 160},
+                        "position": {"top": 680, "left": 260, "width": 200, "height": 180},
                         "sub_items": [
                             "水力発電利用",
                             "ノルウェー生産基地",
@@ -469,7 +545,7 @@
                     "regional_americas": {
                         "name": "北米地域生産",
                         "color": "linear-gradient(135deg, #641e16, #4a1410)",
-                        "position": {"top": 650, "right": 30, "width": 180, "height": 160},
+                        "position": {"top": 680, "right": 40, "width": 200, "height": 180},
                         "sub_items": [
                             "カナダ水力発電",
                             "米国天然ガス発電",
@@ -491,7 +567,7 @@
                     "scrap_collection": {
                         "name": "スクラップ回収システム",
                         "color": "linear-gradient(135deg, #17a2b8, #138496)",
-                        "position": {"top": 150, "left": 50, "width": 220, "height": 180},
+                        "position": {"top": 160, "left": 60, "width": 240, "height": 200},
                         "sub_items": [
                             "建築廃材回収",
                             "自動車解体スクラップ",
@@ -505,7 +581,7 @@
                     "preprocessing": {
                         "name": "前処理工程",
                         "color": "linear-gradient(135deg, #138496, #0f6674)",
-                        "position": {"top": 150, "right": 50, "width": 200, "height": 180},
+                        "position": {"top": 160, "right": 60, "width": 220, "height": 200},
                         "sub_items": [
                             "磁気分離",
                             "渦電流分離",
@@ -519,7 +595,7 @@
                     "melting_refining": {
                         "name": "溶解・精製プロセス",
                         "color": "linear-gradient(135deg, #0f6674, #0a525a)",
-                        "position": {"top": 400, "left": "50%", "transform": "translateX(-50%)", "width": 240, "height": 200},
+                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 260, "height": 220},
                         "sub_items": [
                             "反射炉溶解",
                             "回転炉溶解",
@@ -533,7 +609,7 @@
                     "quality_control": {
                         "name": "品質管理・分析",
                         "color": "linear-gradient(135deg, #0a525a, #073e47)",
-                        "position": {"top": 650, "left": 50, "width": 200, "height": 160},
+                        "position": {"top": 680, "left": 60, "width": 220, "height": 180},
                         "sub_items": [
                             "化学成分分析",
                             "機械特性試験",
@@ -547,7 +623,7 @@
                     "secondary_ingot": {
                         "name": "再生インゴット製造",
                         "color": "linear-gradient(135deg, #073e47, #042a2f)",
-                        "position": {"top": 650, "right": 50, "width": 200, "height": 160},
+                        "position": {"top": 680, "right": 60, "width": 220, "height": 180},
                         "sub_items": [
                             "鋳造技術",
                             "冷却制御",
@@ -679,19 +755,58 @@
             
             // 位置設定
             const pos = areaData.position;
-            Object.keys(pos).forEach(prop => {
-                if (prop === 'left' && pos[prop].toString().includes('%')) {
-                    area.style.left = pos[prop];
-                } else if (prop === 'right') {
-                    area.style.right = pos[prop] + 'px';
-                } else if (prop === 'transform') {
-                    area.style.transform = pos[prop];
-                } else if (typeof pos[prop] === 'number') {
-                    area.style[prop] = pos[prop] + 'px';
+            
+            // モバイル向けに調整された位置情報を適用
+            if (window.innerWidth <= 768) {
+                // モバイルでは縦に配置
+                const mobilePositions = {
+                    'primary_production': { top: '170px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'secondary_production': { top: '410px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'alloys': { top: '650px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'processing': { top: '890px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '240px' },
+                    'products': { top: '1150px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '240px' }
+                };
+                
+                const areaKey = Object.keys(areaHierarchy[currentLevel].areas).find(key => 
+                    areaHierarchy[currentLevel].areas[key] === areaData
+                );
+                
+                if (mobilePositions[areaKey]) {
+                    Object.keys(mobilePositions[areaKey]).forEach(prop => {
+                        area.style[prop] = mobilePositions[areaKey][prop];
+                    });
                 } else {
-                    area.style[prop] = pos[prop];
+                    // デフォルトの位置設定
+                    Object.keys(pos).forEach(prop => {
+                        if (prop === 'left' && pos[prop].toString().includes('%')) {
+                            area.style.left = pos[prop];
+                        } else if (prop === 'right') {
+                            area.style.right = pos[prop] + 'px';
+                        } else if (prop === 'transform') {
+                            area.style.transform = pos[prop];
+                        } else if (typeof pos[prop] === 'number') {
+                            area.style[prop] = pos[prop] + 'px';
+                        } else {
+                            area.style[prop] = pos[prop];
+                        }
+                    });
                 }
-            });
+            } else {
+                // デスクトップの位置設定
+                Object.keys(pos).forEach(prop => {
+                    if (prop === 'left' && pos[prop].toString().includes('%')) {
+                        area.style.left = pos[prop];
+                    } else if (prop === 'right') {
+                        area.style.right = pos[prop] + 'px';
+                    } else if (prop === 'transform') {
+                        area.style.transform = pos[prop];
+                    } else if (typeof pos[prop] === 'number') {
+                        area.style[prop] = pos[prop] + 'px';
+                    } else {
+                        area.style[prop] = pos[prop];
+                    }
+                });
+            }
             
             // クリックイベント
             if (areaData.has_detail) {
