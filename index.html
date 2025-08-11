@@ -160,6 +160,12 @@
             transform: scale(1.05);
             box-shadow: 0 12px 35px rgba(0,0,0,0.25);
             z-index: 50;
+            border: 3px solid rgba(255,255,255,0.8);
+        }
+        
+        .area.info-hover {
+            border: 2px solid rgba(52, 152, 219, 0.8);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
         }
         
         .area.clickable::after {
@@ -475,7 +481,7 @@
                     "bauxite_mining": {
                         "name": "ボーキサイト採掘",
                         "color": "linear-gradient(135deg, #e74c3c, #c0392b)",
-                        "position": {"top": 170, "left": 50, "width": 280, "height": 220},
+                        "position": {"top": 200, "left": 80, "width": 320, "height": 250},
                         "sub_items": [
                             "露天掘り採掘",
                             "地下採掘",
@@ -489,7 +495,7 @@
                     "alumina_refining": {
                         "name": "アルミナ精製",
                         "color": "linear-gradient(135deg, #c0392b, #a93226)",
-                        "position": {"top": 170, "right": 50, "width": 280, "height": 220},
+                        "position": {"top": 200, "right": 80, "width": 320, "height": 250},
                         "sub_items": [
                             "バイヤー法プロセス",
                             "赤泥処理",
@@ -503,7 +509,7 @@
                     "electrolysis": {
                         "name": "電解製錬",
                         "color": "linear-gradient(135deg, #a93226, #922b21)",
-                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 320, "height": 240},
+                        "position": {"top": 500, "left": "50%", "transform": "translateX(-50%)", "width": 380, "height": 280},
                         "sub_items": [
                             "ホール・エルー法",
                             "電解槽管理",
@@ -513,48 +519,6 @@
                         ],
                         "has_detail": false,
                         "legend_color": "#a93226"
-                    },
-                    "regional_china": {
-                        "name": "中国地域生産",
-                        "color": "linear-gradient(135deg, #922b21, #7b241c)",
-                        "position": {"top": 690, "left": 30, "width": 240, "height": 200},
-                        "sub_items": [
-                            "石炭火力発電依存",
-                            "内モンゴル生産基地",
-                            "新疆ウイグル生産基地",
-                            "環境規制対応",
-                            "生産能力拡張"
-                        ],
-                        "has_detail": false,
-                        "legend_color": "#922b21"
-                    },
-                    "regional_europe": {
-                        "name": "欧州地域生産",
-                        "color": "linear-gradient(135deg, #7b241c, #641e16)",
-                        "position": {"top": 690, "left": "50%", "transform": "translateX(-50%)", "width": 240, "height": 200},
-                        "sub_items": [
-                            "水力発電利用",
-                            "ノルウェー生産基地",
-                            "アイスランド生産基地",
-                            "再生可能エネルギー",
-                            "EU規制対応"
-                        ],
-                        "has_detail": false,
-                        "legend_color": "#7b241c"
-                    },
-                    "regional_americas": {
-                        "name": "北米地域生産",
-                        "color": "linear-gradient(135deg, #641e16, #4a1410)",
-                        "position": {"top": 690, "right": 30, "width": 240, "height": 200},
-                        "sub_items": [
-                            "カナダ水力発電",
-                            "米国天然ガス発電",
-                            "ケベック州生産基地",
-                            "NAFTA協定影響",
-                            "炭素税対応"
-                        ],
-                        "has_detail": false,
-                        "legend_color": "#641e16"
                     }
                 }
             },
@@ -706,24 +670,6 @@
                 content: `<strong>スクラップの溶解前準備工程</strong><br>
                 磁気分離や渦電流分離により他の金属を除去し、破砕・洗浄を行って溶解に適した状態にします。`
             },
-            regional_china: {
-                title: '中国地域生産',
-                content: `<strong>世界最大のアルミニウム生産国</strong><br>
-                石炭火力発電に依存した高炭素集約的な生産が特徴。内モンゴル、新疆ウイグル地域に大規模生産基地を持つ。
-                環境規制の強化により生産効率向上が進められています。`
-            },
-            regional_europe: {
-                title: '欧州地域生産',
-                content: `<strong>再生可能エネルギーを活用した低炭素生産</strong><br>
-                ノルウェー、アイスランドの豊富な水力発電を活用。EU規制により環境配慮が徹底されており、
-                世界で最も低炭素なアルミニウム生産を実現しています。`
-            },
-            regional_americas: {
-                title: '北米地域生産',
-                content: `<strong>カナダの水力発電とUSの天然ガス発電</strong><br>
-                ケベック州を中心とした水力発電利用と、米国の天然ガス発電によるバランスの取れた生産体制。
-                NAFTA協定により北米域内での原材料・製品流通が活発です。`
-            },
             melting_refining: {
                 title: '溶解・精製プロセス',
                 content: `<strong>スクラップから高品質アルミニウムへの変換</strong><br>
@@ -805,12 +751,9 @@
                     'products': { top: '1150px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '240px' },
                     
                     // 一次生産エリア詳細
-                    'bauxite_mining': { top: '170px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
-                    'alumina_refining': { top: '390px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
-                    'electrolysis': { top: '610px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
-                    'regional_china': { top: '850px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
-                    'regional_europe': { top: '1050px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
-                    'regional_americas': { top: '1250px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
+                    'bauxite_mining': { top: '200px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'alumina_refining': { top: '440px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'electrolysis': { top: '680px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '250px' },
                     
                     // 二次生産エリア詳細
                     'scrap_collection': { top: '170px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
@@ -867,6 +810,16 @@
             } else {
                 area.addEventListener('click', () => showAreaInfo(areaKey));
             }
+            
+            // ホバーイベントを追加
+            area.addEventListener('mouseenter', () => {
+                showAreaInfo(areaKey);
+                area.classList.add('info-hover');
+            });
+            area.addEventListener('mouseleave', () => {
+                showDefaultInfo();
+                area.classList.remove('info-hover');
+            });
             
             // タイトル
             const title = document.createElement('div');
@@ -930,15 +883,6 @@
             const infoContent = document.getElementById('infoContentTop');
             const infoTitle = document.querySelector('#infoPanelTop .info-title');
             
-            // 既存のactiveクラスを削除
-            document.querySelectorAll('.area').forEach(el => el.classList.remove('active'));
-            
-            // クリックされたエリアにactiveクラスを追加
-            const areaElement = document.querySelector(`[data-key="${areaKey}"]`);
-            if (areaElement) {
-                areaElement.classList.add('active');
-            }
-            
             // メインレベルでは対応するキーを変換
             let infoKey = areaKey;
             if (currentLevel === 'main') {
@@ -958,6 +902,22 @@
             } else {
                 infoTitle.textContent = 'エリア情報';
                 infoContent.innerHTML = 'このエリアの詳細情報は準備中です。';
+            }
+        }
+        
+        // デフォルト情報表示
+        function showDefaultInfo() {
+            const infoContent = document.getElementById('infoContentTop');
+            const infoTitle = document.querySelector('#infoPanelTop .info-title');
+            
+            infoTitle.textContent = 'エリア情報';
+            if (currentLevel === 'main') {
+                infoContent.innerHTML = `各エリアをクリックして詳細情報を表示するか、詳細エリアに移動してください。<br>
+                この図は、ecoinventデータベースにおけるアルミニウム関連プロセスを地理的エリアのように表現し、
+                それぞれの領域内に関連するプロセスやカテゴリをグループ化しています。`;
+            } else {
+                infoContent.innerHTML = `各エリアをクリックまたはホバーして詳細情報を確認してください。<br>
+                このレベルでは、より具体的なプロセスやカテゴリの詳細を表示しています。`;
             }
         }
         
