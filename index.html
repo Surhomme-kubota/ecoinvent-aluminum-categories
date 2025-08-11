@@ -475,7 +475,7 @@
                     "bauxite_mining": {
                         "name": "ボーキサイト採掘",
                         "color": "linear-gradient(135deg, #e74c3c, #c0392b)",
-                        "position": {"top": 160, "left": 60, "width": 220, "height": 200},
+                        "position": {"top": 170, "left": 50, "width": 280, "height": 220},
                         "sub_items": [
                             "露天掘り採掘",
                             "地下採掘",
@@ -489,7 +489,7 @@
                     "alumina_refining": {
                         "name": "アルミナ精製",
                         "color": "linear-gradient(135deg, #c0392b, #a93226)",
-                        "position": {"top": 160, "right": 60, "width": 220, "height": 200},
+                        "position": {"top": 170, "right": 50, "width": 280, "height": 220},
                         "sub_items": [
                             "バイヤー法プロセス",
                             "赤泥処理",
@@ -503,7 +503,7 @@
                     "electrolysis": {
                         "name": "電解製錬",
                         "color": "linear-gradient(135deg, #a93226, #922b21)",
-                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 260, "height": 220},
+                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 320, "height": 240},
                         "sub_items": [
                             "ホール・エルー法",
                             "電解槽管理",
@@ -517,7 +517,7 @@
                     "regional_china": {
                         "name": "中国地域生産",
                         "color": "linear-gradient(135deg, #922b21, #7b241c)",
-                        "position": {"top": 680, "left": 40, "width": 200, "height": 180},
+                        "position": {"top": 690, "left": 30, "width": 240, "height": 200},
                         "sub_items": [
                             "石炭火力発電依存",
                             "内モンゴル生産基地",
@@ -531,7 +531,7 @@
                     "regional_europe": {
                         "name": "欧州地域生産",
                         "color": "linear-gradient(135deg, #7b241c, #641e16)",
-                        "position": {"top": 680, "left": 260, "width": 200, "height": 180},
+                        "position": {"top": 690, "left": "50%", "transform": "translateX(-50%)", "width": 240, "height": 200},
                         "sub_items": [
                             "水力発電利用",
                             "ノルウェー生産基地",
@@ -545,7 +545,7 @@
                     "regional_americas": {
                         "name": "北米地域生産",
                         "color": "linear-gradient(135deg, #641e16, #4a1410)",
-                        "position": {"top": 680, "right": 40, "width": 200, "height": 180},
+                        "position": {"top": 690, "right": 30, "width": 240, "height": 200},
                         "sub_items": [
                             "カナダ水力発電",
                             "米国天然ガス発電",
@@ -567,7 +567,7 @@
                     "scrap_collection": {
                         "name": "スクラップ回収システム",
                         "color": "linear-gradient(135deg, #17a2b8, #138496)",
-                        "position": {"top": 160, "left": 60, "width": 240, "height": 200},
+                        "position": {"top": 170, "left": 50, "width": 280, "height": 220},
                         "sub_items": [
                             "建築廃材回収",
                             "自動車解体スクラップ",
@@ -581,7 +581,7 @@
                     "preprocessing": {
                         "name": "前処理工程",
                         "color": "linear-gradient(135deg, #138496, #0f6674)",
-                        "position": {"top": 160, "right": 60, "width": 220, "height": 200},
+                        "position": {"top": 170, "right": 50, "width": 280, "height": 220},
                         "sub_items": [
                             "磁気分離",
                             "渦電流分離",
@@ -595,7 +595,7 @@
                     "melting_refining": {
                         "name": "溶解・精製プロセス",
                         "color": "linear-gradient(135deg, #0f6674, #0a525a)",
-                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 260, "height": 220},
+                        "position": {"top": 420, "left": "50%", "transform": "translateX(-50%)", "width": 320, "height": 240},
                         "sub_items": [
                             "反射炉溶解",
                             "回転炉溶解",
@@ -609,7 +609,7 @@
                     "quality_control": {
                         "name": "品質管理・分析",
                         "color": "linear-gradient(135deg, #0a525a, #073e47)",
-                        "position": {"top": 680, "left": 60, "width": 220, "height": 180},
+                        "position": {"top": 690, "left": 50, "width": 280, "height": 200},
                         "sub_items": [
                             "化学成分分析",
                             "機械特性試験",
@@ -623,7 +623,7 @@
                     "secondary_ingot": {
                         "name": "再生インゴット製造",
                         "color": "linear-gradient(135deg, #073e47, #042a2f)",
-                        "position": {"top": 680, "right": 60, "width": 220, "height": 180},
+                        "position": {"top": 690, "right": 50, "width": 280, "height": 200},
                         "sub_items": [
                             "鋳造技術",
                             "冷却制御",
@@ -705,6 +705,42 @@
                 title: '前処理工程',
                 content: `<strong>スクラップの溶解前準備工程</strong><br>
                 磁気分離や渦電流分離により他の金属を除去し、破砕・洗浄を行って溶解に適した状態にします。`
+            },
+            regional_china: {
+                title: '中国地域生産',
+                content: `<strong>世界最大のアルミニウム生産国</strong><br>
+                石炭火力発電に依存した高炭素集約的な生産が特徴。内モンゴル、新疆ウイグル地域に大規模生産基地を持つ。
+                環境規制の強化により生産効率向上が進められています。`
+            },
+            regional_europe: {
+                title: '欧州地域生産',
+                content: `<strong>再生可能エネルギーを活用した低炭素生産</strong><br>
+                ノルウェー、アイスランドの豊富な水力発電を活用。EU規制により環境配慮が徹底されており、
+                世界で最も低炭素なアルミニウム生産を実現しています。`
+            },
+            regional_americas: {
+                title: '北米地域生産',
+                content: `<strong>カナダの水力発電とUSの天然ガス発電</strong><br>
+                ケベック州を中心とした水力発電利用と、米国の天然ガス発電によるバランスの取れた生産体制。
+                NAFTA協定により北米域内での原材料・製品流通が活発です。`
+            },
+            melting_refining: {
+                title: '溶解・精製プロセス',
+                content: `<strong>スクラップから高品質アルミニウムへの変換</strong><br>
+                反射炉や回転炉による溶解、フラックス処理によるガス・介在物除去により、
+                一次アルミニウムと同等品質の再生アルミニウムを製造します。`
+            },
+            quality_control: {
+                title: '品質管理・分析',
+                content: `<strong>製品品質保証のための総合分析システム</strong><br>
+                化学成分分析、機械特性試験、組織観察を通じて品質を保証。
+                トレーサビリティシステムにより原料から製品まで追跡可能です。`
+            },
+            secondary_ingot: {
+                title: '再生インゴット製造',
+                content: `<strong>リサイクルアルミニウムの最終形態</strong><br>
+                精密な鋳造技術と冷却制御により、用途に応じた品質の再生インゴットを製造。
+                一次インゴットと同等の品質を実現しています。`
             }
         };
         
@@ -752,6 +788,7 @@
             const area = document.createElement('div');
             area.className = `area ${areaData.has_detail ? 'clickable' : ''}`;
             area.style.background = areaData.color;
+            area.setAttribute('data-key', areaKey);
             
             // 位置設定
             const pos = areaData.position;
@@ -760,11 +797,27 @@
             if (window.innerWidth <= 768) {
                 // モバイルでは縦に配置
                 const mobilePositions = {
+                    // メインレベル
                     'primary_production': { top: '170px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
                     'secondary_production': { top: '410px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
                     'alloys': { top: '650px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
                     'processing': { top: '890px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '240px' },
-                    'products': { top: '1150px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '240px' }
+                    'products': { top: '1150px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '240px' },
+                    
+                    // 一次生産エリア詳細
+                    'bauxite_mining': { top: '170px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
+                    'alumina_refining': { top: '390px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
+                    'electrolysis': { top: '610px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'regional_china': { top: '850px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
+                    'regional_europe': { top: '1050px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
+                    'regional_americas': { top: '1250px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
+                    
+                    // 二次生産エリア詳細
+                    'scrap_collection': { top: '170px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
+                    'preprocessing': { top: '390px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '200px' },
+                    'melting_refining': { top: '610px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '220px' },
+                    'quality_control': { top: '850px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' },
+                    'secondary_ingot': { top: '1050px', left: '10px', right: 'auto', width: 'calc(100% - 20px)', height: '180px' }
                 };
                 
                 const areaKey = Object.keys(areaHierarchy[currentLevel].areas).find(key => 
@@ -886,9 +939,25 @@
                 areaElement.classList.add('active');
             }
             
-            if (areaInfo[areaKey]) {
-                infoTitle.textContent = areaInfo[areaKey].title;
-                infoContent.innerHTML = areaInfo[areaKey].content;
+            // メインレベルでは対応するキーを変換
+            let infoKey = areaKey;
+            if (currentLevel === 'main') {
+                const keyMapping = {
+                    'primary_production': 'primary',
+                    'secondary_production': 'secondary',
+                    'alloys': 'alloys',
+                    'processing': 'processing',
+                    'products': 'products'
+                };
+                infoKey = keyMapping[areaKey] || areaKey;
+            }
+            
+            if (areaInfo[infoKey]) {
+                infoTitle.textContent = areaInfo[infoKey].title;
+                infoContent.innerHTML = areaInfo[infoKey].content;
+            } else {
+                infoTitle.textContent = 'エリア情報';
+                infoContent.innerHTML = 'このエリアの詳細情報は準備中です。';
             }
         }
         
