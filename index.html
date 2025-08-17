@@ -388,6 +388,168 @@
             backdrop-filter: blur(5px);
         }
         
+        /* 類似度検索スタイル */
+        .similarity-search-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .similarity-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+        }
+        
+        /* 類似度表示バッジ */
+        .similarity-badge {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: white;
+            border-radius: 15px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+        
+        .similarity-high {
+            color: #27ae60;
+            border: 2px solid #27ae60;
+        }
+        
+        .similarity-medium {
+            color: #f39c12;
+            border: 2px solid #f39c12;
+        }
+        
+        .similarity-low {
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+        }
+        
+        /* 類似度検索モーダル */
+        .similarity-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 900px;
+            max-height: 85vh;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow-y: auto;
+        }
+        
+        .similarity-input-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .similarity-input-group {
+            margin-bottom: 15px;
+        }
+        
+        .similarity-input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .similarity-input-group input,
+        .similarity-input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .similarity-results {
+            margin-top: 20px;
+        }
+        
+        .similarity-result-item {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .similarity-result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .similarity-score {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .similarity-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .similarity-chart {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .similarity-chart-label {
+            width: 120px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .similarity-chart-bar {
+            flex: 1;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 0 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .similarity-chart-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .similarity-chart-value {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+        }
+        
         .modal {
             position: absolute;
             top: 50%;
@@ -528,6 +690,46 @@
             </div>
             <div class="activity-list" id="activityList">
                 <!-- 動的に生成される -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 類似度検索モーダル -->
+    <div class="modal-overlay" id="similarityModal">
+        <div class="similarity-modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="similarityModalTitle">類似プロセス検索</h2>
+                <button class="modal-close" onclick="closeSimilarityModal()">&times;</button>
+            </div>
+            
+            <div class="similarity-input-section">
+                <h3>探している採掘方法の詳細を入力してください</h3>
+                <div class="similarity-input-group">
+                    <label>採掘方法名:</label>
+                    <input type="text" id="miningMethodName" placeholder="例: 海底採掘、溶液採掘、etc.">
+                </div>
+                <div class="similarity-input-group">
+                    <label>採掘深度:</label>
+                    <select id="miningDepth">
+                        <option value="surface">地表付近（0-50m）</option>
+                        <option value="shallow">浅層（50-200m）</option>
+                        <option value="deep">深層（200m以上）</option>
+                        <option value="underwater">水中・海底</option>
+                    </select>
+                </div>
+                <div class="similarity-input-group">
+                    <label>採掘規模:</label>
+                    <select id="miningScale">
+                        <option value="small">小規模</option>
+                        <option value="medium">中規模</option>
+                        <option value="large">大規模</option>
+                    </select>
+                </div>
+                <button onclick="searchSimilarProcesses()" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px;">類似プロセスを検索</button>
+            </div>
+            
+            <div class="similarity-results" id="similarityResults">
+                <!-- 検索結果が動的に表示される -->
             </div>
         </div>
     </div>
@@ -754,6 +956,74 @@
         let currentLevel = "main";
         let breadcrumb = ["アルミニウム全体"];
         
+        // プロセス類似度データ
+        const processSimilarityData = {
+            "採掘方法": {
+                "露天掘り採掘": {
+                    characteristics: {
+                        深度: "surface",
+                        環境影響: 80,
+                        コスト: 60,
+                        生産効率: 90,
+                        安全性: 85,
+                        エネルギー消費: 70
+                    }
+                },
+                "地下採掘": {
+                    characteristics: {
+                        深度: "deep",
+                        環境影響: 40,
+                        コスト: 90,
+                        生産効率: 60,
+                        安全性: 50,
+                        エネルギー消費: 85
+                    }
+                }
+            }
+        };
+        
+        // 類似度計算関数
+        function calculateSimilarity(target, existing) {
+            const weights = {
+                深度: 0.25,
+                環境影響: 0.2,
+                コスト: 0.2,
+                生産効率: 0.15,
+                安全性: 0.1,
+                エネルギー消費: 0.1
+            };
+            
+            let totalScore = 0;
+            let details = {};
+            
+            // 深度の類似度
+            const depthScore = target.深度 === existing.characteristics.深度 ? 100 : 
+                              (target.深度 === "shallow" && existing.characteristics.深度 === "surface") ? 70 : 
+                              (target.深度 === "underwater" && existing.characteristics.深度 === "surface") ? 30 : 50;
+            
+            details.深度 = depthScore;
+            totalScore += depthScore * weights.深度;
+            
+            // その他の特性（仮の値）
+            const otherScores = {
+                環境影響: Math.max(0, 100 - Math.abs(target.環境影響 - existing.characteristics.環境影響)),
+                コスト: Math.max(0, 100 - Math.abs(target.コスト - existing.characteristics.コスト)),
+                生産効率: Math.max(0, 100 - Math.abs(target.生産効率 - existing.characteristics.生産効率)),
+                安全性: Math.max(0, 100 - Math.abs(target.安全性 - existing.characteristics.安全性)),
+                エネルギー消費: Math.max(0, 100 - Math.abs(target.エネルギー消費 - existing.characteristics.エネルギー消費))
+            };
+            
+            Object.keys(otherScores).forEach(key => {
+                details[key] = otherScores[key];
+                totalScore += otherScores[key] * weights[key];
+            });
+            
+            return {
+                total: Math.round(totalScore),
+                details: details
+            };
+        }
+        
         // Activity ID サンプルデータ
         const activityData = {
             "露天掘り採掘": {
@@ -871,6 +1141,10 @@
                 一次インゴットと同等の品質を実現しています。`
             }
         };
+        
+        // 類似度検索モードの状態
+        let similaritySearchMode = false;
+        let targetProcess = null;
         
         // 初期表示
         document.addEventListener('DOMContentLoaded', function() {
@@ -1008,6 +1282,18 @@
             title.className = 'area-title';
             title.textContent = areaData.name;
             area.appendChild(title);
+            
+            // 類似度検索ボタンを追加（ボーキサイト採掘エリアの場合）
+            if (areaKey === 'bauxite_mining' && currentLevel === 'primary_production') {
+                const searchBtn = document.createElement('button');
+                searchBtn.className = 'similarity-search-btn';
+                searchBtn.textContent = '🔍 類似プロセス検索';
+                searchBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openSimilarityModal('bauxite_mining');
+                };
+                area.appendChild(searchBtn);
+            }
             
             // コンテンツ
             const content = document.createElement('div');
@@ -1227,8 +1513,164 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeActivityModal();
+                closeSimilarityModal();
             }
         });
+        
+        // 類似度検索モーダル関数
+        function openSimilarityModal(areaKey) {
+            const modal = document.getElementById('similarityModal');
+            const title = document.getElementById('similarityModalTitle');
+            title.textContent = 'ボーキサイト採掘 - 類似プロセス検索';
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeSimilarityModal() {
+            const modal = document.getElementById('similarityModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // 類似度バッジをクリア
+            document.querySelectorAll('.similarity-badge').forEach(badge => badge.remove());
+        }
+        
+        function searchSimilarProcesses() {
+            const methodName = document.getElementById('miningMethodName').value;
+            const depth = document.getElementById('miningDepth').value;
+            const scale = document.getElementById('miningScale').value;
+            
+            if (!methodName) {
+                alert('採掘方法名を入力してください');
+                return;
+            }
+            
+            // 仮の特性値を設定（実際には入力フォームから取得）
+            const targetCharacteristics = {
+                深度: depth,
+                環境影響: depth === 'underwater' ? 90 : 60,
+                コスト: scale === 'large' ? 80 : 50,
+                生産効率: scale === 'large' ? 85 : 60,
+                安全性: depth === 'underwater' ? 40 : 70,
+                エネルギー消費: depth === 'deep' ? 90 : 65
+            };
+            
+            // 類似度計算
+            const results = [];
+            Object.keys(processSimilarityData['採掘方法']).forEach(processName => {
+                const similarity = calculateSimilarity(
+                    targetCharacteristics,
+                    processSimilarityData['採掘方法'][processName]
+                );
+                results.push({
+                    name: processName,
+                    similarity: similarity,
+                    data: processSimilarityData['採掘方法'][processName]
+                });
+            });
+            
+            // 他のカテゴリからも類似プロセスを探す（例）
+            results.push({
+                name: '機械加工 (切削・研磨)',
+                category: 'アルミニウム加工エリア',
+                similarity: {
+                    total: 35,
+                    details: {
+                        深度: 0,
+                        環境影響: 40,
+                        コスト: 60,
+                        生産効率: 50,
+                        安全性: 80,
+                        エネルギー消費: 45
+                    }
+                },
+                note: '材料除去プロセスとしての類似性'
+            });
+            
+            // スコア順にソート
+            results.sort((a, b) => b.similarity.total - a.similarity.total);
+            
+            // 結果表示
+            displaySimilarityResults(methodName, results);
+        }
+        
+        function displaySimilarityResults(targetMethod, results) {
+            const resultsContainer = document.getElementById('similarityResults');
+            resultsContainer.innerHTML = `
+                <h3>「${targetMethod}」に類似するプロセス</h3>
+            `;
+            
+            results.forEach((result, index) => {
+                const scoreClass = result.similarity.total >= 70 ? 'similarity-high' : 
+                                  result.similarity.total >= 50 ? 'similarity-medium' : 'similarity-low';
+                
+                const resultItem = document.createElement('div');
+                resultItem.className = 'similarity-result-item';
+                resultItem.innerHTML = `
+                    <h4>${result.name} ${result.category ? `（${result.category}）` : ''}</h4>
+                    <div class="similarity-score ${scoreClass}">${result.similarity.total}%</div>
+                    ${result.note ? `<p style="color: #666; font-size: 14px; margin: 10px 0;">${result.note}</p>` : ''}
+                    
+                    <div class="similarity-details">
+                        <h5>詳細な類似度分析:</h5>
+                        ${Object.keys(result.similarity.details).map(key => `
+                            <div class="similarity-chart">
+                                <div class="similarity-chart-label">${key}:</div>
+                                <div class="similarity-chart-bar">
+                                    <div class="similarity-chart-fill" style="width: ${result.similarity.details[key]}%"></div>
+                                </div>
+                                <div class="similarity-chart-value">${result.similarity.details[key]}%</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-radius: 5px; font-size: 13px;">
+                        <strong>推奨事項:</strong> 
+                        ${result.similarity.total >= 70 ? 
+                            'このプロセスのデータセットを使用し、深度や規模の差異を補正係数で調整することを推奨します。' :
+                            result.similarity.total >= 50 ?
+                            'このプロセスを参考にしつつ、主要な差異点について追加の調査や専門家への相談を推奨します。' :
+                            '類似度が低いため、複数のプロセスを組み合わせるか、新規データの収集を検討してください。'
+                        }
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(resultItem);
+                
+                // アニメーション
+                setTimeout(() => {
+                    resultItem.style.opacity = '0';
+                    resultItem.style.transform = 'translateY(20px)';
+                    requestAnimationFrame(() => {
+                        resultItem.style.transition = 'all 0.5s ease';
+                        resultItem.style.opacity = '1';
+                        resultItem.style.transform = 'translateY(0)';
+                    });
+                }, index * 100);
+            });
+            
+            // 元のエリアに類似度バッジを表示
+            closeSimilarityModal();
+            showSimilarityBadges(results);
+        }
+        
+        function showSimilarityBadges(results) {
+            // 現在表示されているエリアに類似度バッジを追加
+            results.slice(0, 2).forEach(result => {
+                const areas = document.querySelectorAll('.area');
+                areas.forEach(area => {
+                    const title = area.querySelector('.area-title');
+                    if (title && title.textContent.includes(result.name)) {
+                        const badge = document.createElement('div');
+                        badge.className = 'similarity-badge';
+                        const scoreClass = result.similarity.total >= 70 ? 'similarity-high' : 
+                                          result.similarity.total >= 50 ? 'similarity-medium' : 'similarity-low';
+                        badge.classList.add(scoreClass);
+                        badge.textContent = `${result.similarity.total}% 一致`;
+                        area.appendChild(badge);
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
