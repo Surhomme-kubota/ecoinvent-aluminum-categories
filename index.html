@@ -647,6 +647,17 @@
     <div class="container">
         <div class="title">ecoinvent アルミニウムカテゴリエリア図</div>
         
+        <!-- 抽象検索バー -->
+        <div class="abstract-search-container" id="abstractSearchContainer">
+            <div class="abstract-search-input-wrapper">
+                <input type="text" id="abstractSearchInput" placeholder="例: 日本の電力、アジアのアルミニウム生産、etc." class="abstract-search-input">
+                <button onclick="performAbstractSearch()" class="abstract-search-btn">🔍 検索</button>
+            </div>
+            <div class="abstract-search-suggestions" id="searchSuggestions">
+                <!-- 検索候補が動的に表示される -->
+            </div>
+        </div>
+        
         <!-- パンくずナビ -->
         <div class="breadcrumb" id="breadcrumb">
             <span class="breadcrumb-item">アルミニウム全体</span>
