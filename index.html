@@ -550,6 +550,158 @@
             color: #333;
         }
         
+        /* ミックス構成モーダルの改善されたスタイル */
+        .mix-composition-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1000px;
+            max-height: 85vh;
+            width: 95%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            border: 2px solid #3498db;
+            color: white;
+        }
+        
+        .mix-composition-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        .mix-composition-modal .modal-close {
+            background: rgba(231, 76, 60, 0.8);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .mix-composition-modal .modal-close:hover {
+            background: #e74c3c;
+            transform: scale(1.1);
+        }
+        
+        .mix-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .mix-subtitle {
+            color: #bdc3c7;
+            font-size: 16px;
+        }
+        
+        .mix-composition-modal .preset-info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .mix-composition-modal .preset-info h4 {
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+        
+        .mix-composition-modal .preset-info p {
+            font-size: 14px;
+            color: #ecf0f1;
+            margin: 4px 0;
+        }
+        
+        .mix-visualization {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #34495e;
+        }
+        
+        .mix-visualization h3 {
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .mix-components {
+            background: rgba(44, 62, 80, 0.8);
+            border: 1px solid #34495e;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .mix-components h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .mix-composition-modal .component-item {
+            background: linear-gradient(135deg, rgba(52, 73, 94, 0.9), rgba(44, 62, 80, 0.9));
+            border: 1px solid #34495e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .mix-composition-modal .component-item:hover {
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transform: translateY(-2px);
+            border-color: #3498db;
+        }
+        
+        .mix-composition-modal .component-name {
+            font-weight: bold;
+            color: white;
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+        
+        .mix-composition-modal .component-id {
+            font-size: 12px;
+            color: #95a5a6;
+            font-family: monospace;
+        }
+        
+        .mix-composition-modal .component-percentage {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            margin-right: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .mix-composition-modal .percentage-input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #34495e;
+            border-radius: 5px;
+            text-align: center;
+            background: rgba(44, 62, 80, 0.8);
+            color: white;
+        }
+        
+        .mix-composition-modal .percentage-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
         .modal {
             position: absolute;
             top: 50%;
