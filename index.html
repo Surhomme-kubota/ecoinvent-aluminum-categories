@@ -967,6 +967,56 @@
         let currentLevel = "main";
         let breadcrumb = ["アルミニウム全体"];
         
+        // プリセットミックスデータ
+        const presetMixes = {
+            "日本の電力": {
+                name: "日本の電力構成（2023年度）",
+                description: "経済産業省エネルギー統計に基づく日本の電力構成",
+                year: 2023,
+                source: "経済産業省 電力調査統計",
+                components: [
+                    { id: "coal_power_jp_001", name: "石炭火力発電", percentage: 30, category: "火力発電" },
+                    { id: "lng_power_jp_001", name: "LNG火力発電", percentage: 37, category: "火力発電" },
+                    { id: "oil_power_jp_001", name: "石油火力発電", percentage: 3, category: "火力発電" },
+                    { id: "nuclear_power_jp_001", name: "原子力発電", percentage: 6, category: "原子力" },
+                    { id: "hydro_power_jp_001", name: "水力発電", percentage: 8, category: "再生可能エネルギー" },
+                    { id: "solar_power_jp_001", name: "太陽光発電", percentage: 10, category: "再生可能エネルギー" },
+                    { id: "wind_power_jp_001", name: "風力発電", percentage: 1, category: "再生可能エネルギー" },
+                    { id: "biomass_power_jp_001", name: "バイオマス発電", percentage: 3, category: "再生可能エネルギー" },
+                    { id: "geothermal_power_jp_001", name: "地熱発電", percentage: 2, category: "再生可能エネルギー" }
+                ]
+            },
+            "アジアのアルミニウム生産": {
+                name: "アジア地域アルミニウム生産構成（2023年）",
+                description: "アジア主要国のアルミニウム生産比率",
+                year: 2023,
+                source: "International Aluminium Institute",
+                components: [
+                    { id: "aluminum_prod_china_001", name: "中国アルミニウム生産", percentage: 58, category: "一次生産" },
+                    { id: "aluminum_prod_india_001", name: "インドアルミニウム生産", percentage: 6, category: "一次生産" },
+                    { id: "aluminum_prod_japan_001", name: "日本アルミニウム生産", percentage: 3, category: "二次生産" },
+                    { id: "aluminum_prod_korea_001", name: "韓国アルミニウム生産", percentage: 2, category: "二次生産" },
+                    { id: "aluminum_prod_uae_001", name: "UAEアルミニウム生産", percentage: 5, category: "一次生産" },
+                    { id: "aluminum_prod_bahrain_001", name: "バーレーンアルミニウム生産", percentage: 2, category: "一次生産" },
+                    { id: "aluminum_prod_malaysia_001", name: "マレーシアアルミニウム生産", percentage: 2, category: "一次生産" },
+                    { id: "aluminum_prod_others_asia_001", name: "その他アジア", percentage: 22, category: "混合" }
+                ]
+            },
+            "欧州の再生アルミニウム": {
+                name: "欧州再生アルミニウム供給源（2023年）",
+                description: "欧州における再生アルミニウムの供給源別構成",
+                year: 2023,
+                source: "European Aluminium Association",
+                components: [
+                    { id: "scrap_automotive_eu_001", name: "自動車スクラップ", percentage: 35, category: "輸送部門" },
+                    { id: "scrap_construction_eu_001", name: "建築廃材", percentage: 28, category: "建設部門" },
+                    { id: "scrap_packaging_eu_001", name: "包装材スクラップ", percentage: 20, category: "包装部門" },
+                    { id: "scrap_machinery_eu_001", name: "機械・設備スクラップ", percentage: 10, category: "産業部門" },
+                    { id: "scrap_consumer_eu_001", name: "消費財スクラップ", percentage: 7, category: "消費財部門" }
+                ]
+            }
+        };
+        
         // プロセス類似度データ
         const processSimilarityData = {
             "採掘方法": {
