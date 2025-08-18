@@ -1671,6 +1671,243 @@
                 });
             });
         }
+        
+        // 抽象検索機能
+        const abstractSearchInput = document.getElementById('abstractSearchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        
+        // 検索候補を表示
+        abstractSearchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 2) {
+                searchSuggestions.style.display = 'none';
+                return;
+            }
+            
+            const matches = Object.keys(presetMixes).filter(key => 
+                key.toLowerCase().includes(query)
+            );
+            
+            if (matches.length > 0) {
+                searchSuggestions.innerHTML = '';
+                matches.forEach(match => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.textContent = match;
+                    item.onclick = () => {
+                        abstractSearchInput.value = match;
+                        searchSuggestions.style.display = 'none';
+                        performAbstractSearch();
+                    };
+                    searchSuggestions.appendChild(item);
+                });
+                searchSuggestions.style.display = 'block';
+            } else {
+                searchSuggestions.style.display = 'none';
+            }
+        });
+        
+        // 抽象検索実行
+        function performAbstractSearch() {
+            const query = abstractSearchInput.value;
+            if (presetMixes[query]) {
+                showMixComposition(query);
+            } else {
+                alert('該当するプリセットが見つかりません。類似の検索語をお試しください。');
+            }
+        }
+        
+        // ミックス構成表示
+        function showMixComposition(mixName) {
+            const mixData = presetMixes[mixName];
+            
+            // モーダル作成
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.style.display = 'block';
+            modalOverlay.id = 'mixCompositionModal';
+            
+            const modal = document.createElement('div');
+            modal.className = 'mix-composition-modal';
+            
+            modal.innerHTML = `
+                <div class="modal-header">
+                    <button class="modal-close" onclick="closeMixModal()">&times;</button>
+                </div>
+                
+                <div class="mix-header">
+                    <h2 class="mix-title">${mixData.name}</h2>
+                    <p class="mix-subtitle">${mixData.description}</p>
+                </div>
+                
+                <div class="preset-info">
+                    <h4>データ情報</h4>
+                    <p><strong>年度:</strong> ${mixData.year}年</p>
+                    <p><strong>出典:</strong> ${mixData.source}</p>
+                    <p><strong>構成要素数:</strong> ${mixData.components.length}項目</p>
+                </div>
+                
+                <div class="mix-content">
+                    <div class="mix-visualization">
+                        <h3>構成比率</h3>
+                        <div class="mix-chart" id="mixChart">
+                            <canvas id="pieChart" width="300" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="mix-components">
+                        <h3>構成要素</h3>
+                        <div id="componentsList">
+                            ${mixData.components.map((comp, index) => `
+                                <div class="component-item">
+                                    <div class="component-info">
+                                        <div class="component-name">${comp.name}</div>
+                                        <div class="component-id">ID: ${comp.id}</div>
+                                        <div style="font-size: 12px; color: #666; margin-top: 2px;">カテゴリ: ${comp.category}</div>
+                                    </div>
+                                    <div class="component-actions">
+                                        <span class="component-percentage">${comp.percentage}%</span>
+                                        <input type="number" class="percentage-input" value="${comp.percentage}" 
+                                               id="input-${index}" min="0" max="100" step="0.1"
+                                               onchange="updatePercentage(${index})">
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; text-align: center;">
+                            <strong>合計: <span id="totalPercentage">100</span>%</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mix-actions">
+                    <button class="mix-action-btn btn-primary" onclick="applyMixComposition('${mixName}')">
+                        この構成を適用
+                    </button>
+                    <button class="mix-action-btn btn-secondary" onclick="exportMixComposition('${mixName}')">
+                        構成をエクスポート
+                    </button>
+                    <button class="mix-action-btn btn-secondary" onclick="closeMixModal()">
+                        キャンセル
+                    </button>
+                </div>
+            `;
+            
+            modalOverlay.appendChild(modal);
+            document.body.appendChild(modalOverlay);
+            document.body.style.overflow = 'hidden';
+            
+            // 円グラフ描画
+            drawPieChart(mixData.components);
+            
+            // 現在の構成データを保存
+            window.currentMixData = JSON.parse(JSON.stringify(mixData));
+        }
+        
+        function drawPieChart(components) {
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 120;
+            
+            // 色パレット
+            const colors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#36A2EB'
+            ];
+            
+            let currentAngle = -Math.PI / 2; // 上から開始
+            
+            components.forEach((comp, index) => {
+                const sliceAngle = (comp.percentage / 100) * 2 * Math.PI;
+                
+                // 扇形描画
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.fillStyle = colors[index % colors.length];
+                ctx.fill();
+                
+                // ラベル描画（5%以上の場合）
+                if (comp.percentage >= 5) {
+                    const labelAngle = currentAngle + sliceAngle / 2;
+                    const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                    const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(comp.percentage + '%', labelX, labelY);
+                }
+                
+                currentAngle += sliceAngle;
+            });
+        }
+        
+        function updatePercentage(index) {
+            const input = document.getElementById(`input-${index}`);
+            const newValue = parseFloat(input.value) || 0;
+            window.currentMixData.components[index].percentage = newValue;
+            
+            // 合計を更新
+            const total = window.currentMixData.components.reduce((sum, comp) => sum + comp.percentage, 0);
+            document.getElementById('totalPercentage').textContent = total.toFixed(1);
+            
+            // グラフを再描画
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPieChart(window.currentMixData.components);
+        }
+        
+        function closeMixModal() {
+            const modal = document.getElementById('mixCompositionModal');
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        function applyMixComposition(mixName) {
+            const total = window.currentMixData.components.reduce((sum, comp) => sum + comp.percentage, 0);
+            if (Math.abs(total - 100) > 0.1) {
+                alert('構成比の合計は100%である必要があります。現在の合計: ' + total.toFixed(1) + '%');
+                return;
+            }
+            
+            alert(`「${mixName}」の構成が適用されました。\n\n` +
+                  '適用された構成:\n' +
+                  window.currentMixData.components.map(comp => 
+                      `${comp.name}: ${comp.percentage}%`
+                  ).join('\n'));
+            
+            closeMixModal();
+        }
+        
+        function exportMixComposition(mixName) {
+            const exportData = {
+                name: window.currentMixData.name,
+                timestamp: new Date().toISOString(),
+                components: window.currentMixData.components
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${mixName.replace(/\s+/g, '_')}_composition.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // クリック外でドロップダウンを閉じる
+        document.addEventListener('click', function(e) {
+            if (!abstractSearchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                searchSuggestions.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
